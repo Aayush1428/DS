@@ -1,0 +1,180 @@
+Assignment 5 Token Ring
+
+File name: TokenRing.java
+
+Code:
+import java.util.*;
+
+
+
+public class TokenRing{
+
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Enter Number Of Nodes You Want In The Ring : ");
+		int n = sc.nextInt();
+		
+		System.out.println("Ring Formed Is As Below: ");
+		for(int i=0; i<n; i++){
+			System.out.print(i + " ");
+		}
+		
+		System.out.println("0");
+		
+		
+		int choice = 0;
+		
+		do{
+			System.out.print("Enter Sender : ");
+			int sender = sc.nextInt();
+			
+			System.out.print("Enter Receiver : ");
+			int receiver = sc.nextInt();
+			
+			System.out.print("Enter Data To Send : ");
+			int data = sc.nextInt();
+			
+			int token = 0;
+			
+			System.out.print("Token Passing : ");
+			
+			for(int i=token; i<sender; i++){
+				System.out.print(" " + i + "->");
+			}
+			
+			System.out.println(" " + sender);
+			System.out.println("Sender:" + sender + " Sending Data: " + data);
+			
+			for(int i=sender; i!=receiver; i = (i+1)%n){
+				System.out.println("Data: " + data + " Forwarded By: " + i);
+			}
+			
+			System.out.println("Receiver: " + receiver + " Received The Data: " + data);
+			
+			token = sender;
+			
+			System.out.print("Do You Want To Send Data Again? If YES Enter 1, If NO Enter 0: ");
+			choice = sc.nextInt();
+		
+		}while(choice == 1);		
+		
+	}
+}
+
+
+
+ouput:
+
+Microsoft Windows [Version 10.0.19045.4170]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\HP>cd Desktop
+
+C:\Users\HP\Desktop>cd DS
+
+C:\Users\HP\Desktop\DS>cd DS_main
+
+C:\Users\HP\Desktop\DS\DS_main>cd Assign5
+
+C:\Users\HP\Desktop\DS\DS_main\Assign5>javac TokenRing.java
+
+C:\Users\HP\Desktop\DS\DS_main\Assign5>java TokenRing
+Enter Number Of Nodes You Want In The Ring : 5
+Ring Formed Is As Below:
+0 1 2 3 4 0
+Enter Sender : 1
+Enter Receiver : 4
+Enter Data To Send : 200
+Token Passing :  0-> 1
+Sender:1 Sending Data: 200
+Data: 200 Forwarded By: 1
+Data: 200 Forwarded By: 2
+Data: 200 Forwarded By: 3
+Receiver: 4 Received The Data: 200
+Do You Want To Send Data Again? If YES Enter 1, If NO Enter 0: 1
+Enter Sender : 4
+Enter Receiver : 3
+Enter Data To Send : 500
+Token Passing :  0-> 1-> 2-> 3-> 4
+Sender:4 Sending Data: 500
+Data: 500 Forwarded By: 4
+Data: 500 Forwarded By: 0
+Data: 500 Forwarded By: 1
+Data: 500 Forwarded By: 2
+Receiver: 3 Received The Data: 500
+Do You Want To Send Data Again? If YES Enter 1, If NO Enter 0:
+
+
+
+
+cpp code:
+
+Filename: Tring.cpp ( to be run in online compiler)
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+int token=0;
+cout<<"Enter Number of Nodes"<<endl;
+int n,s,r,d;
+cin>>n;
+while(true){
+for(int i=0;i<n;i++)cout<<i<<" ";
+cout<<0<<endl;
+cout<<"Enter Sender"<<endl;
+cin>>s;
+cout<<"Enter receiver"<<endl;
+cin>>r;
+cout<<"Enter Data"<<endl;
+cin>>d;
+//Passing token until sender is found
+for(int i=token;(i%n)!=s;i=(i+1)%n){
+cout<<i<<"->";
+}
+cout<<s<<endl;
+//sending data in mutual exclusion
+for(int i=(s)%n;i!=r;i=(i+1)%n){
+cout<<"Sender " <<(i%n) << " sent data "<<d<< " to "<<(i+1)%n<<endl;
+}
+//releasing token
+token=s;
+cout<<"Token at " <<token<<endl;
+}
+return 0;
+}
+
+
+Output:
+/tmp/kkT7KkCizN.o
+Enter Number of Nodes
+6
+0 1 2 3 4 5 0
+Enter Sender
+3
+Enter receiver
+5
+Enter Data
+200
+0->1->2->3
+Sender 3 sent data 200 to 4
+Sender 4 sent data 200 to 5
+Token at 3
+0 1 2 3 4 5 0
+Enter Sender
+2
+Enter receiver
+0
+Enter Data
+600
+3->4->5->0->1->2
+Sender 2 sent data 600 to 3
+Sender 3 sent data 600 to 4
+Sender 4 sent data 600 to 5
+Sender 5 sent data 600 to 0
+Token at 2
+0 1 2 3 4 5 0
+Enter Sender
+

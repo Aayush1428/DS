@@ -1,0 +1,200 @@
+There are 4 files in it 
+Open  3 terminals 
+Filename: Client.java
+
+import java.rmi.*;
+import java.util.Scanner;
+
+
+
+public class Client{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		
+		try{
+			String serverURL = "rmi://localhost/Server";
+			ServerIntf serverIntf = (ServerIntf) Naming.lookup(serverURL);
+			
+			System.out.print("Enter First Number: ");
+			double num1 = sc.nextDouble();
+			
+			System.out.print("Enter Second Number: ");
+			double num2 = sc.nextDouble();
+			
+			
+			System.out.println("First Number Is: " + num1);
+			System.out.println("Second Number Is: " + num2);
+			
+			
+			System.out.println("--------------- Results ---------------");
+			System.out.println("Addition Is: " +serverIntf.Addition(num1, num2));
+			System.out.println("Subtraction Is: " +serverIntf.Subtraction(num1, num2));
+			System.out.println("Multiplication Is: " +serverIntf.Multiplication(num1, num2));
+			System.out.println("Division Is: " +serverIntf.Division(num1, num2));
+			
+			
+		}catch(Exception e){
+			System.out.println("Exception Occurred At Client!" + e.getMessage());
+		}
+		
+	}
+
+}
+
+
+Filename: Server.java
+import java.rmi.*;
+
+public class Server{
+	
+	public static void main(String[] args){
+	
+		try{
+			ServerImpl serverImpl = new ServerImpl();
+			Naming.rebind("Server", serverImpl);
+			
+			System.out.println("Server Started....");
+		
+		}catch(Exception e){
+			System.out.println("Exception Occurred At Server!" + e.getMessage());
+		}
+	}
+	
+	
+}
+
+
+Filename: Serverimpl.java
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class ServerImpl extends UnicastRemoteObject
+	implements ServerIntf {
+	
+		public ServerImpl() throws RemoteException{
+		
+		}
+		
+		public double Addition(double num1, double num2) throws RemoteException{
+			return num1 + num2;
+		}
+		
+		
+		public double Subtraction(double num1, double num2) throws RemoteException{
+			return num1 - num2;
+		}
+		
+		
+		public double Multiplication(double num1, double num2) throws RemoteException{
+			return num1 * num2;
+		}
+		
+		
+		public double Division(double num1, double num2) throws RemoteException{
+			if(num2 != 0){
+				return num1/num2;
+			}
+			else{
+				System.out.println("Cannot Divide A Number By Zero!");
+			}	
+			return num1/num2;
+		}
+	
+	}
+	
+
+
+
+
+Filename: ServerIntf.java
+
+import java.rmi.*;
+
+
+interface ServerIntf extends Remote{
+	// Syntax for method declaration: access_specifier return_type method_name(arguments...){ return value}
+	
+	public double Addition(double num1, double num2) throws RemoteException;
+	public double Subtraction(double num1, double num2) throws RemoteException;
+	public double Multiplication(double num1, double num2) throws RemoteException;
+	public double Division(double num1, double num2) throws RemoteException;
+}
+
+
+
+
+
+Output:
+
+
+1st Terminal:
+
+Microsoft Windows [Version 10.0.19045.4170]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\HP>cd Desktop
+
+C:\Users\HP\Desktop>cd DS
+
+C:\Users\HP\Desktop\DS>cd DS_main
+
+C:\Users\HP\Desktop\DS\DS_main>cd Assi1
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>javac *.java
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>rmiregistry
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by sun.rmi.registry.RegistryImpl
+WARNING: Please consider reporting this to the maintainers of sun.rmi.registry.RegistryImpl
+WARNING: System::setSecurityManager will be removed in a future release
+
+
+
+2nd Terminal: Server
+
+Microsoft Windows [Version 10.0.19045.4170]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\HP>cd Desktop
+
+C:\Users\HP\Desktop>cd DS
+
+C:\Users\HP\Desktop\DS>cd DS_main
+
+C:\Users\HP\Desktop\DS\DS_main>cd Assi1
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>java Server.java
+Server Started....
+
+
+3rd Terminal Client:
+Microsoft Windows [Version 10.0.19045.4170]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\HP>cd Desktop
+
+C:\Users\HP\Desktop>cd DS
+
+C:\Users\HP\Desktop\DS>cd DS_main
+
+C:\Users\HP\Desktop\DS\DS_main>cd Assi1
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>java Client.java
+Exception in thread "main" java.lang.IllegalAccessError: failed to access class ServerIntf from class Client (ServerIntf is in unnamed module of loader 'app'; Client is in unnamed module of loader com.sun.tools.javac.launcher.Main$MemoryClassLoader @226a82c4)
+        at Client.main(Client.java:12)
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>java Client
+Enter First Number: 46
+Enter Second Number: 23
+First Number Is: 46.0
+Second Number Is: 23.0
+--------------- Results ---------------
+Addition Is: 69.0
+Subtraction Is: 23.0
+Multiplication Is: 1058.0
+Division Is: 2.0
+
+C:\Users\HP\Desktop\DS\DS_main\Assi1>
+
+
